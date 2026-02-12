@@ -271,7 +271,7 @@
     } else {
       headerRoundInfo.textContent = "";
     }
-    headerPlayerCount.textContent = `${state.aliveCount} / ${state.totalPlayers} alive`;
+    headerPlayerCount.textContent = `${state.aliveCount} alive`;
 
     // Update scoreboard
     updateScoreboard(state.players, state.eliminationHistory);
@@ -291,13 +291,12 @@
         })
         .catch(() => {});
 
-      // Update players grid
+      // Update players grid (only show alive players)
       hostPlayersGrid.innerHTML = "";
-      state.players.forEach((p) => {
+      state.players.filter((p) => p.isAlive).forEach((p) => {
         const chip = document.createElement("div");
         chip.className = "player-chip";
-        if (!p.isAlive) chip.classList.add("eliminated");
-        if (!p.connected && p.isAlive) chip.classList.add("disconnected");
+        if (!p.connected) chip.classList.add("disconnected");
         chip.textContent = p.name;
         chip.style.animationDelay = `${Math.random() * 0.3}s`;
         hostPlayersGrid.appendChild(chip);
