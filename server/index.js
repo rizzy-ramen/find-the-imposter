@@ -116,6 +116,7 @@ io.on("connection", (socket) => {
         word: player.word,
         duration: game.settings.wordRevealTime,
         round: game.round,
+        imposterCount: roundInfo.imposterCount,
         isImposter: player.isImposter, // Player doesn't know, but we track
       });
     }

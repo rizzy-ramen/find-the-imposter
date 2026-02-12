@@ -204,6 +204,12 @@
     showScreen("word-reveal");
     wordDisplay.textContent = data.word;
     const duration = data.duration;
+
+    // Show imposter count
+    const imposterBadge = document.getElementById("player-imposter-count");
+    if (imposterBadge) {
+      imposterBadge.textContent = `${data.imposterCount} imposter${data.imposterCount > 1 ? "s" : ""} this round`;
+    }
     let remaining = duration;
 
     const circumference = 2 * Math.PI * 54;
@@ -309,10 +315,12 @@
       localStorage.removeItem("playerName");
       playerId = null;
 
+      document.getElementById("eliminated-heading").textContent = "YOU HAVE BEEN REMOVED";
       eliminatedRole.innerHTML =
-        'You were removed by the moderator for rule violation.<br><br>' +
-        '<span style="color:var(--accent-cyan); font-size:0.9rem;">You can rejoin the game — refresh this page.</span>';
+        'You were removed by the moderator.<br><br>' +
+        '<span style="color:var(--accent-cyan); font-size:0.9rem;">Please refresh this page to rejoin the game.</span>';
     } else {
+      document.getElementById("eliminated-heading").textContent = "YOU HAVE BEEN ELIMINATED";
       eliminatedRole.textContent = data.wasImposter
         ? `You were the IMPOSTER. Your word was: ${data.word}`
         : `You were INNOCENT. Your word was: ${data.word}`;

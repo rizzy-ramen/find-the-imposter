@@ -367,6 +367,10 @@
     const roundBanner = `ROUND ${data.round} — ${data.aliveCount} PLAYERS — ${data.imposterCount} IMPOSTER${data.imposterCount > 1 ? "S" : ""}`;
     headerRoundInfo.textContent = roundBanner;
 
+    // Show prominent imposter count banner
+    const imposterBanner = document.getElementById("host-imposter-banner");
+    imposterBanner.innerHTML = `<span class="imposter-count-number">${data.imposterCount}</span> IMPOSTER${data.imposterCount > 1 ? "S" : ""} AMONG YOU`;
+
     if (data.isFinalRound) {
       hostWordCountdown.style.color = "var(--accent-red)";
       document.querySelector("#host-word-reveal .phase-title").textContent = "⚠️ FINAL ROUND — CHECK YOUR SCREENS";

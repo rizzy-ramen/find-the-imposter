@@ -32,6 +32,7 @@
 
     <!-- WORD REVEAL SCREEN -->
     <div class="screen word-reveal-screen" id="screen-word-reveal">
+      <div class="imposter-info-badge" id="player-imposter-count"></div>
       <div class="memorize-label">Memorize this word!</div>
       <div class="the-word" id="word-display"></div>
       <div class="countdown-ring" id="word-countdown-ring">
@@ -86,7 +87,7 @@
     <!-- ELIMINATED SCREEN -->
     <div class="screen eliminated-screen" id="screen-eliminated">
       <div class="skull">💀</div>
-      <h2>YOU HAVE BEEN ELIMINATED</h2>
+      <h2 id="eliminated-heading">YOU HAVE BEEN ELIMINATED</h2>
       <div class="role-reveal" id="eliminated-role"></div>
       <p style="color:var(--text-muted); margin-top:20px;">Watch the game on the meeting room screen.</p>
     </div>
