@@ -413,20 +413,25 @@ class Game {
     }
   }
 
-  // Manually eliminate a player (rule breaker)
+  // Manually kick a player (rule breaker) — removes them entirely so they can rejoin
   kickPlayer(playerId) {
     const player = this.players.get(playerId);
     if (player) {
-      player.isAlive = false;
-      this.eliminationHistory.push({
+      // Store info before removing
+      const playerInfo = {
         id: player.id,
         name: player.name,
-        wasImposter: player.isImposter,
+        socketId: player.socketId,
+        isImposter: player.isImposter,
         word: player.word,
-        round: this.round,
-        kicked: true,
-      });
-      return player;
+      };
+      // Remove from game entirely — they can rejoin as a new player
+      this.players.delete(playerId);
+      // Remove from clue order if present
+      this.clueOrder = this.clueOrder.filter((id) => id !== playerId);
+      // Remove their vote if they voted
+      this.votes.delete(playerId);
+      return playerInfo;
     }
     return null;
   }

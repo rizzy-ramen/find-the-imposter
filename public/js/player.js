@@ -303,7 +303,15 @@
     isEliminated = true;
 
     if (data.kicked) {
-      eliminatedRole.textContent = "You were removed by the moderator for rule violation.";
+      // Kicked players can rejoin — clear stored session so they join as new player
+      localStorage.removeItem("playerId");
+      localStorage.removeItem("gameId");
+      localStorage.removeItem("playerName");
+      playerId = null;
+
+      eliminatedRole.innerHTML =
+        'You were removed by the moderator for rule violation.<br><br>' +
+        '<span style="color:var(--accent-cyan); font-size:0.9rem;">You can rejoin the game — refresh this page.</span>';
     } else {
       eliminatedRole.textContent = data.wasImposter
         ? `You were the IMPOSTER. Your word was: ${data.word}`
