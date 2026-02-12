@@ -250,6 +250,7 @@
     if (isEliminated) return;
 
     showScreen("voting");
+    playSound("phaseVoting");
     selectedVote = null;
     voteConfirmBar.style.display = "none";
     btnConfirmVote.disabled = false;
@@ -339,12 +340,14 @@
         showScreen("waiting");
         waitingPhaseLabel.textContent = "CLUE CIRCLE";
         waitingPhaseInfo.textContent = "Listen and observe. Give your clue when called.";
+        playSound("phaseClue");
         break;
 
       case "DISCUSSION":
         showScreen("waiting");
         waitingPhaseLabel.textContent = "OPEN DISCUSSION";
         waitingPhaseInfo.textContent = "Debate, question, and defend yourself.";
+        playSound("phaseDiscussion");
         break;
 
       case "RESULTS":
@@ -352,6 +355,7 @@
         showScreen("waiting");
         waitingPhaseLabel.textContent = "RESULTS";
         waitingPhaseInfo.textContent = "Watch the host screen...";
+        playSound("phaseResults");
         break;
 
       case "ELIMINATION":
@@ -361,10 +365,12 @@
             showScreen("waiting");
             waitingPhaseLabel.textContent = "GAME OVER";
             waitingPhaseInfo.textContent = "Watch the host screen for the final result!";
+            playSound("phaseGameOver");
           } else {
             showScreen("result");
             resultMessage.textContent = "You survived this round!";
             resultRemaining.textContent = `${data.remainingPlayers} players remain.`;
+            playSound("survived");
           }
         }
         break;
@@ -484,6 +490,91 @@
           gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.8);
           oscillator.stop(audioCtx.currentTime + 0.8);
           break;
+        case "phaseClue":
+          // Rising chime — attention, it's clue time
+          oscillator.frequency.value = 500;
+          oscillator.type = "sine";
+          gainNode.gain.value = 0.12;
+          oscillator.start();
+          oscillator.frequency.linearRampToValueAtTime(800, audioCtx.currentTime + 0.15);
+          gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
+          oscillator.stop(audioCtx.currentTime + 0.4);
+          break;
+        case "phaseDiscussion": {
+          // Double tone — debate is on
+          const o2 = audioCtx.createOscillator();
+          const g2 = audioCtx.createGain();
+          o2.connect(g2);
+          g2.connect(audioCtx.destination);
+          oscillator.frequency.value = 600;
+          gainNode.gain.value = 0.1;
+          oscillator.start();
+          oscillator.stop(audioCtx.currentTime + 0.12);
+          o2.frequency.value = 750;
+          g2.gain.value = 0.1;
+          o2.start(audioCtx.currentTime + 0.15);
+          o2.stop(audioCtx.currentTime + 0.27);
+          break;
+        }
+        case "phaseVoting": {
+          // Urgent triple beep — vote now
+          [0, 0.15, 0.3].forEach((delay) => {
+            const o = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            o.connect(g);
+            g.connect(audioCtx.destination);
+            o.frequency.value = 880;
+            o.type = "square";
+            g.gain.value = 0.08;
+            o.start(audioCtx.currentTime + delay);
+            o.stop(audioCtx.currentTime + delay + 0.08);
+          });
+          break;
+        }
+        case "phaseResults": {
+          // Suspenseful low sweep
+          oscillator.frequency.value = 200;
+          oscillator.type = "triangle";
+          gainNode.gain.value = 0.1;
+          oscillator.start();
+          oscillator.frequency.linearRampToValueAtTime(500, audioCtx.currentTime + 0.6);
+          gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.8);
+          oscillator.stop(audioCtx.currentTime + 0.8);
+          break;
+        }
+        case "phaseGameOver": {
+          // Dramatic low drone + high ping
+          oscillator.frequency.value = 100;
+          oscillator.type = "sawtooth";
+          gainNode.gain.value = 0.1;
+          oscillator.start();
+          gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.0);
+          oscillator.stop(audioCtx.currentTime + 1.0);
+          const ping = audioCtx.createOscillator();
+          const pg = audioCtx.createGain();
+          ping.connect(pg);
+          pg.connect(audioCtx.destination);
+          ping.frequency.value = 1200;
+          pg.gain.value = 0.08;
+          ping.start(audioCtx.currentTime + 0.5);
+          pg.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.2);
+          ping.stop(audioCtx.currentTime + 1.2);
+          break;
+        }
+        case "survived": {
+          // Happy rising arpeggio
+          [523, 659, 784].forEach((freq, i) => {
+            const o = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            o.connect(g);
+            g.connect(audioCtx.destination);
+            o.frequency.value = freq;
+            g.gain.value = 0.08;
+            o.start(audioCtx.currentTime + i * 0.12);
+            o.stop(audioCtx.currentTime + i * 0.12 + 0.2);
+          });
+          break;
+        }
       }
     } catch (e) {
       // Ignore audio errors

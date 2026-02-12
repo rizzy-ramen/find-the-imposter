@@ -670,17 +670,155 @@
     // This will also be handled through the elimination phase-change
   });
 
+  // ---- Confetti System ----
+  function launchConfetti(duration) {
+    const canvas = document.getElementById("confetti-canvas");
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    canvas.width = canvas.parentElement.offsetWidth;
+    canvas.height = canvas.parentElement.offsetHeight;
+
+    const colors = ["#ff3366", "#00ffff", "#ffcc00", "#00ff88", "#aa66ff", "#ff6633", "#66ccff"];
+    const particles = [];
+
+    for (let i = 0; i < 200; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height - canvas.height,
+        w: Math.random() * 10 + 4,
+        h: Math.random() * 6 + 2,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        vx: (Math.random() - 0.5) * 4,
+        vy: Math.random() * 3 + 2,
+        rotation: Math.random() * 360,
+        rotSpeed: (Math.random() - 0.5) * 10,
+        opacity: 1,
+      });
+    }
+
+    const startTime = Date.now();
+    let animId;
+
+    function animate() {
+      const elapsed = Date.now() - startTime;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Start fading out in the last 2 seconds
+      const fadeStart = duration - 2000;
+
+      particles.forEach((p) => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.05; // gravity
+        p.rotation += p.rotSpeed;
+
+        if (elapsed > fadeStart) {
+          p.opacity = Math.max(0, 1 - (elapsed - fadeStart) / 2000);
+        }
+
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate((p.rotation * Math.PI) / 180);
+        ctx.globalAlpha = p.opacity;
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+        ctx.restore();
+
+        // Reset if off screen (during active phase)
+        if (p.y > canvas.height && elapsed < fadeStart) {
+          p.y = -10;
+          p.x = Math.random() * canvas.width;
+          p.vy = Math.random() * 3 + 2;
+        }
+      });
+
+      if (elapsed < duration) {
+        animId = requestAnimationFrame(animate);
+      } else {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        cancelAnimationFrame(animId);
+      }
+    }
+
+    animate();
+  }
+
+  function playCelebration() {
+    // Extended victory fanfare
+    const notes = [523, 523, 659, 784, 784, 659, 784, 1047];
+    const timings = [0, 0.15, 0.3, 0.45, 0.6, 0.75, 0.9, 1.1];
+    const durations = [0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.2, 0.5];
+    notes.forEach((freq, i) => {
+      const o = audioCtx.createOscillator();
+      const g = audioCtx.createGain();
+      o.connect(g);
+      g.connect(audioCtx.destination);
+      o.frequency.value = freq;
+      o.type = "triangle";
+      g.gain.value = 0.12;
+      o.start(audioCtx.currentTime + timings[i]);
+      g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + timings[i] + durations[i]);
+      o.stop(audioCtx.currentTime + timings[i] + durations[i]);
+    });
+
+    // Add shimmer effect
+    setTimeout(() => {
+      for (let i = 0; i < 5; i++) {
+        const o = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        o.connect(g);
+        g.connect(audioCtx.destination);
+        o.frequency.value = 2000 + i * 400;
+        o.type = "sine";
+        g.gain.value = 0.03;
+        o.start(audioCtx.currentTime + i * 0.1);
+        g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + i * 0.1 + 0.3);
+        o.stop(audioCtx.currentTime + i * 0.1 + 0.3);
+      }
+    }, 1200);
+  }
+
+  function playDefeatSound() {
+    // Ominous descending tones
+    const notes = [400, 350, 300, 250, 200];
+    notes.forEach((freq, i) => {
+      const o = audioCtx.createOscillator();
+      const g = audioCtx.createGain();
+      o.connect(g);
+      g.connect(audioCtx.destination);
+      o.frequency.value = freq;
+      o.type = "sawtooth";
+      g.gain.value = 0.1;
+      o.start(audioCtx.currentTime + i * 0.25);
+      g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + i * 0.25 + 0.35);
+      o.stop(audioCtx.currentTime + i * 0.25 + 0.35);
+    });
+    // Low rumble
+    const rumble = audioCtx.createOscillator();
+    const rg = audioCtx.createGain();
+    rumble.connect(rg);
+    rg.connect(audioCtx.destination);
+    rumble.frequency.value = 60;
+    rumble.type = "sawtooth";
+    rg.gain.value = 0.06;
+    rumble.start(audioCtx.currentTime + 1.2);
+    rg.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2.5);
+    rumble.stop(audioCtx.currentTime + 2.5);
+  }
+
   function handleGameOver(data) {
     showHostScreen("gameover");
 
     if (data.winner === "MAIN_TEAM") {
       gameoverTitle.textContent = "MAIN TEAM WINS!";
       gameoverTitle.className = "gameover-title main-wins";
-      playSound("victory");
+      playCelebration();
+      launchConfetti(8000);
     } else {
       gameoverTitle.textContent = "IMPOSTER WINS!";
       gameoverTitle.className = "gameover-title imposter-wins";
-      playSound("defeat");
+      playDefeatSound();
+      launchConfetti(8000); // confetti for any ending — it's dramatic!
     }
 
     // Show winner name(s)
@@ -742,6 +880,12 @@
 
   socket.on("game-restart", () => {
     clearAllTimers();
+    // Clear confetti canvas
+    const confettiCanvas = document.getElementById("confetti-canvas");
+    if (confettiCanvas) {
+      const ctx = confettiCanvas.getContext("2d");
+      ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+    }
     // Reset to lobby — the game-state event will repopulate it
     showHostScreen("lobby");
     hostPlayersGrid.innerHTML = "";
