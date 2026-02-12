@@ -246,6 +246,8 @@
     showScreen("voting");
     selectedVote = null;
     voteConfirmBar.style.display = "none";
+    btnConfirmVote.disabled = false;
+    btnConfirmVote.textContent = "CONFIRM VOTE";
     voteList.innerHTML = "";
 
     data.alivePlayers.forEach((p) => {
