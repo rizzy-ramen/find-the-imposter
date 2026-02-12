@@ -384,6 +384,13 @@ class Game {
 
     const alivePlayers = this.getAlivePlayers();
 
+    // Players eliminated in the final round vote
+    const finalRoundEliminated = this.eliminatedThisRound.map((p) => ({
+      id: p.id,
+      name: p.name,
+      isImposter: p.isImposter,
+    }));
+
     // Check if the last eliminated player (from final round vote) was the imposter
     const lastEliminated = this.eliminatedThisRound[this.eliminatedThisRound.length - 1];
     const imposterCaught = lastEliminated && lastEliminated.isImposter;
@@ -393,22 +400,24 @@ class Game {
       return {
         winner: "MAIN_TEAM",
         message: "The imposter has been caught! Main team wins!",
-        survivors: alivePlayers.map((p) => ({ id: p.id, name: p.name })),
-        imposter: {
-          id: lastEliminated.id,
-          name: lastEliminated.name,
-        },
+        survivors: alivePlayers.map((p) => ({
+          id: p.id,
+          name: p.name,
+          isImposter: p.isImposter,
+        })),
+        finalRoundEliminated,
       };
     } else {
       // Imposter wins - they survived
-      const imposter = alivePlayers.find((p) => p.isImposter);
       return {
         winner: "IMPOSTER",
         message: "The imposter survived! Imposter wins!",
-        survivors: alivePlayers.map((p) => ({ id: p.id, name: p.name })),
-        imposter: imposter
-          ? { id: imposter.id, name: imposter.name }
-          : null,
+        survivors: alivePlayers.map((p) => ({
+          id: p.id,
+          name: p.name,
+          isImposter: p.isImposter,
+        })),
+        finalRoundEliminated,
       };
     }
   }

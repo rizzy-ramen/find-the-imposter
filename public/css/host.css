@@ -668,14 +668,69 @@
   justify-content: center;
 }
 
-.gameover-survivors .survivor-chip {
+.gameover-section-label {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  letter-spacing: 3px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-top: 10px;
+}
+
+.gameover-eliminated {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.gameover-survivors .survivor-chip,
+.gameover-eliminated .survivor-chip {
   font-family: var(--font-display);
   font-size: 1.2rem;
   padding: 12px 24px;
   border-radius: 12px;
   background: var(--bg-card);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.survivor-chip .chip-role {
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  font-weight: 700;
+  opacity: 0.9;
+}
+
+/* Alive innocent */
+.survivor-chip.innocent-chip {
   border: 2px solid var(--accent-green);
   color: var(--accent-green);
+}
+
+/* Alive imposter (highlighted in red) */
+.survivor-chip.imposter-chip {
+  border: 2px solid var(--accent-red);
+  color: var(--accent-red);
+  box-shadow: 0 0 20px rgba(255, 51, 102, 0.3);
+}
+
+/* Eliminated innocent in final round */
+.survivor-chip.eliminated-innocent-chip {
+  border: 2px solid var(--text-muted);
+  color: var(--text-muted);
+  opacity: 0.7;
+  text-decoration: line-through;
+}
+
+/* Eliminated imposter in final round (caught!) */
+.survivor-chip.eliminated-imposter-chip {
+  border: 2px solid var(--accent-red);
+  color: var(--accent-red);
+  opacity: 0.7;
+  text-decoration: line-through;
 }
 
 /* ---- Scoreboard Sidebar ---- */

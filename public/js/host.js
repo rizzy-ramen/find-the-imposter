@@ -681,13 +681,39 @@
 
     gameoverMessage.textContent = data.message;
 
+    // Render survivors with role indicators
     gameoverSurvivors.innerHTML = "";
     data.survivors.forEach((p) => {
       const chip = document.createElement("div");
-      chip.className = "survivor-chip";
-      chip.textContent = p.name;
+      chip.className = p.isImposter
+        ? "survivor-chip imposter-chip"
+        : "survivor-chip innocent-chip";
+      chip.innerHTML = p.isImposter
+        ? `<span class="chip-role">IMPOSTER</span>${p.name}`
+        : `<span class="chip-role">INNOCENT</span>${p.name}`;
       gameoverSurvivors.appendChild(chip);
     });
+
+    // Render final round eliminated players
+    const eliminatedContainer = document.getElementById("gameover-eliminated");
+    const eliminatedLabel = document.getElementById("gameover-eliminated-label");
+    eliminatedContainer.innerHTML = "";
+
+    if (data.finalRoundEliminated && data.finalRoundEliminated.length > 0) {
+      eliminatedLabel.style.display = "block";
+      data.finalRoundEliminated.forEach((p) => {
+        const chip = document.createElement("div");
+        chip.className = p.isImposter
+          ? "survivor-chip eliminated-imposter-chip"
+          : "survivor-chip eliminated-innocent-chip";
+        chip.innerHTML = p.isImposter
+          ? `<span class="chip-role">IMPOSTER</span>${p.name}`
+          : `<span class="chip-role">INNOCENT</span>${p.name}`;
+        eliminatedContainer.appendChild(chip);
+      });
+    } else {
+      eliminatedLabel.style.display = "none";
+    }
   }
 
   // ---- Game Restart ----
