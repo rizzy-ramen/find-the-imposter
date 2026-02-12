@@ -280,7 +280,7 @@
     if (state.phase === "LOBBY") {
       showHostScreen("lobby");
       hostRoomCode.textContent = state.id;
-      hostLobbyCount.textContent = state.totalPlayers;
+      hostLobbyCount.textContent = state.aliveCount;
 
       // Load QR code
       fetch(`/api/qrcode/${state.id}`)
@@ -296,6 +296,8 @@
       state.players.forEach((p) => {
         const chip = document.createElement("div");
         chip.className = "player-chip";
+        if (!p.isAlive) chip.classList.add("eliminated");
+        if (!p.connected && p.isAlive) chip.classList.add("disconnected");
         chip.textContent = p.name;
         chip.style.animationDelay = `${Math.random() * 0.3}s`;
         hostPlayersGrid.appendChild(chip);
