@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Find The Imposter - Host Display</title>
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/host.css">
+</head>
+<body>
+  <div class="host-container">
+
+    <!-- Header Bar -->
+    <div class="host-header">
+      <div class="logo">FIND THE IMPOSTER</div>
+      <div class="round-info" id="header-round-info"></div>
+      <div class="player-count-badge" id="header-player-count"></div>
+    </div>
+
+    <!-- WAITING FOR GAME -->
+    <div class="host-screen active" id="host-waiting-game">
+      <div style="text-align:center;">
+        <div style="font-family:var(--font-display); font-size:2rem; color:var(--accent-cyan); margin-bottom:16px;">
+          FIND THE IMPOSTER
+        </div>
+        <p style="color:var(--text-secondary); font-size:1.1rem; margin-bottom:24px;">
+          Waiting for moderator to create a game...
+        </p>
+        <p style="color:var(--text-muted); font-size:0.9rem;">
+          Moderator: open <strong>/moderator</strong> in another tab to create a game.
+        </p>
+      </div>
+    </div>
+
+    <!-- LOBBY -->
+    <div class="host-screen host-lobby" id="host-lobby">
+      <div class="room-label">ROOM CODE</div>
+      <div class="room-code" id="host-room-code"></div>
+      <div class="qr-container" id="qr-container">
+        <img id="qr-code-img" src="" alt="QR Code">
+      </div>
+      <div class="join-url" id="join-url"></div>
+      <div style="font-size:1.2rem; color:var(--text-secondary); margin-top:16px;">
+        <span id="host-lobby-count" style="color:var(--accent-cyan); font-family:var(--font-display); font-size:1.5rem;">0</span>
+        players joined
+      </div>
+      <div class="players-grid" id="host-players-grid"></div>
+    </div>
+
+    <!-- WORD REVEAL -->
+    <div class="host-screen host-word-reveal" id="host-word-reveal">
+      <div class="phase-title">CHECK YOUR SCREENS NOW</div>
+      <div class="big-countdown" id="host-word-countdown"></div>
+      <div class="reveal-instruction">Your word is on your screen. Memorize it!</div>
+    </div>
+
+    <!-- CLUE CIRCLE -->
+    <div class="host-screen host-clue-circle" id="host-clue-circle">
+      <div class="phase-title">CLUE CIRCLE</div>
+      <div class="current-speaker" id="current-speaker-container">
+        <div class="speaker-label">YOUR TURN</div>
+        <div class="speaker-name" id="speaker-name"></div>
+      </div>
+      <div class="clue-timer-number" id="clue-timer-number"></div>
+      <div class="clue-timer-bar">
+        <div class="fill" id="clue-timer-fill"></div>
+      </div>
+      <div class="clue-progress" id="clue-progress"></div>
+      <div class="up-next-queue" id="up-next-queue"></div>
+    </div>
+
+    <!-- DISCUSSION -->
+    <div class="host-screen host-discussion" id="host-discussion">
+      <div class="phase-title">OPEN DISCUSSION</div>
+      <div class="discussion-timer" id="discussion-timer"></div>
+      <div style="color:var(--text-secondary);">Question. Accuse. Defend.</div>
+    </div>
+
+    <!-- VOTING -->
+    <div class="host-screen host-voting" id="host-voting">
+      <div class="phase-title">VOTING IN PROGRESS</div>
+      <div class="vote-progress" id="host-vote-progress">0 / 0</div>
+      <div class="vote-progress-label">have voted</div>
+    </div>
+
+    <!-- RESULTS -->
+    <div class="host-screen host-results" id="host-results">
+      <div class="phase-title">VOTE RESULTS</div>
+      <div class="vote-bars" id="vote-bars"></div>
+    </div>
+
+    <!-- TIE BREAKER -->
+    <div class="host-screen host-tiebreak" id="host-tiebreak">
+      <div class="phase-title" id="tiebreak-title">TIE DETECTED!</div>
+      <div class="wheel-container" id="wheel-container">
+        <div class="wheel-pointer"></div>
+        <div class="wheel" id="tiebreak-wheel"></div>
+      </div>
+      <div class="tiebreak-result" id="tiebreak-result"></div>
+    </div>
+
+    <!-- ELIMINATION -->
+    <div class="host-screen host-elimination" id="host-elimination">
+      <div style="font-family:var(--font-display); font-size:1.3rem; color:var(--text-secondary); letter-spacing:3px; text-transform:uppercase; margin-bottom:16px;">
+        ELIMINATED
+      </div>
+      <div class="elimination-cards-row" id="elimination-cards"></div>
+      <div class="words-reveal" id="words-reveal-box">
+        <div class="word-pair">
+          <div class="word-item">
+            <div class="word-label">Main Word</div>
+            <div class="word-value main" id="reveal-main-word"></div>
+          </div>
+          <div class="vs-divider">VS</div>
+          <div class="word-item">
+            <div class="word-label">Imposter Word</div>
+            <div class="word-value imposter" id="reveal-imposter-word"></div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:16px; color:var(--text-secondary);">
+        <span id="elim-remaining" style="color:var(--accent-cyan); font-family:var(--font-display);"></span> players remain
+      </div>
+    </div>
+
+    <!-- GAME OVER -->
+    <div class="host-screen host-gameover" id="host-gameover">
+      <div class="gameover-title" id="gameover-title"></div>
+      <div class="gameover-message" id="gameover-message"></div>
+      <div class="gameover-survivors" id="gameover-survivors"></div>
+    </div>
+
+    <!-- Scoreboard Panel -->
+    <div class="scoreboard-panel" id="scoreboard-panel">
+      <h3>ALL PLAYERS</h3>
+      <div class="scoreboard-list" id="scoreboard-list"></div>
+    </div>
+
+    <div class="scoreboard-toggle">
+      <button class="btn btn-small btn-purple" id="btn-toggle-scoreboard">PLAYERS</button>
+    </div>
+
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/host.js"></script>
+</body>
+</html>

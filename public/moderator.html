@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Find The Imposter - Moderator</title>
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/moderator.css">
+</head>
+<body>
+  <div class="moderator-container">
+
+    <!-- CREATE GAME SCREEN -->
+    <div class="mod-screen active" id="mod-create">
+      <div class="mod-header">
+        <h1>MODERATOR PANEL</h1>
+      </div>
+      <div class="create-game-screen">
+        <h2>Find The Imposter</h2>
+        <p>Create a new game to get started. Share the room code with players.</p>
+        <button class="btn btn-primary btn-large" id="btn-create-game">CREATE GAME</button>
+      </div>
+    </div>
+
+    <!-- GAME CONTROL SCREEN -->
+    <div class="mod-screen" id="mod-controls">
+      <div class="mod-header">
+        <h1>MODERATOR PANEL</h1>
+        <div class="room-code-display" id="mod-room-code"></div>
+      </div>
+
+      <!-- Status Bar -->
+      <div class="status-bar">
+        <div class="phase-display" id="mod-phase">LOBBY</div>
+        <div class="round-display" id="mod-round">Round 0</div>
+        <div class="count-display" id="mod-count">0 players</div>
+      </div>
+
+      <!-- Host Screen Link -->
+      <div class="control-section" id="host-link-section">
+        <h3>HOST DISPLAY</h3>
+        <p style="color:var(--text-secondary); font-size:0.85rem; margin-bottom:12px;">
+          Open this link in another tab and share it via Zoom:
+        </p>
+        <a id="host-display-link" href="#" target="_blank" style="color:var(--accent-cyan); word-break:break-all; font-size:0.9rem;"></a>
+        <button class="btn btn-small btn-primary" id="btn-copy-host-link" style="margin-top:10px;">COPY LINK</button>
+      </div>
+
+      <!-- Word Info (visible during rounds) -->
+      <div class="control-section hidden" id="word-info-section">
+        <h3>CURRENT WORDS</h3>
+        <div class="word-info-panel">
+          <div class="word-box">
+            <div class="word-label">Main Word</div>
+            <div class="word-value main" id="mod-main-word">—</div>
+          </div>
+          <div class="word-box">
+            <div class="word-label">Imposter Word</div>
+            <div class="word-value imposter" id="mod-imposter-word">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase Controls -->
+      <div class="control-section">
+        <h3>GAME CONTROLS</h3>
+        <div class="phase-controls" id="phase-controls">
+          <!-- Buttons populated dynamically -->
+        </div>
+      </div>
+
+      <!-- Settings -->
+      <div class="control-section" id="settings-section">
+        <h3>SETTINGS</h3>
+        <div class="settings-grid">
+          <div class="setting-row">
+            <label>Word reveal time</label>
+            <input type="number" id="setting-word-time" min="3" max="30" value="10">
+            <span class="unit">s</span>
+          </div>
+          <div class="setting-row">
+            <label>Clue time per player</label>
+            <input type="number" id="setting-clue-time" min="3" max="30" value="5">
+            <span class="unit">s</span>
+          </div>
+          <div class="setting-row">
+            <label>Discussion time</label>
+            <input type="number" id="setting-discussion-time" min="30" max="600" value="180">
+            <span class="unit">s</span>
+          </div>
+          <div class="setting-row">
+            <label>Voting time</label>
+            <input type="number" id="setting-voting-time" min="30" max="300" value="120">
+            <span class="unit">s</span>
+          </div>
+          <button class="btn btn-small btn-primary" id="btn-save-settings">SAVE SETTINGS</button>
+        </div>
+      </div>
+
+      <!-- Players List -->
+      <div class="control-section">
+        <h3>PLAYERS</h3>
+        <div class="players-list-mod" id="mod-players-list">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/moderator.js"></script>
+</body>
+</html>

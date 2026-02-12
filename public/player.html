@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Find The Imposter - Play</title>
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/player.css">
+</head>
+<body>
+  <div class="player-container">
+
+    <!-- JOIN SCREEN -->
+    <div class="screen join-screen active" id="screen-join">
+      <div class="game-logo">FIND THE IMPOSTER</div>
+      <div class="game-subtitle">Enter the room code to join</div>
+      <div class="join-form">
+        <input type="text" class="input-field" id="input-room-code" placeholder="ROOM CODE" maxlength="4" autocomplete="off">
+        <input type="text" class="input-field name-input" id="input-player-name" placeholder="Your Name" maxlength="20" autocomplete="off">
+        <button class="btn btn-primary btn-large" id="btn-join">JOIN GAME</button>
+        <div class="join-error" id="join-error"></div>
+      </div>
+    </div>
+
+    <!-- LOBBY SCREEN -->
+    <div class="screen lobby-screen" id="screen-lobby">
+      <div class="game-logo" style="font-size:1.4rem;">FIND THE IMPOSTER</div>
+      <div class="player-count" id="lobby-player-count">0</div>
+      <div class="waiting-text">players joined. Waiting for moderator...</div>
+      <div class="your-name">You joined as: <strong id="lobby-your-name"></strong></div>
+    </div>
+
+    <!-- WORD REVEAL SCREEN -->
+    <div class="screen word-reveal-screen" id="screen-word-reveal">
+      <div class="memorize-label">Memorize this word!</div>
+      <div class="the-word" id="word-display"></div>
+      <div class="countdown-ring" id="word-countdown-ring">
+        <svg width="120" height="120">
+          <circle class="bg" cx="60" cy="60" r="54"/>
+          <circle class="progress" id="word-ring-progress" cx="60" cy="60" r="54"
+            stroke-dasharray="339.292" stroke-dashoffset="0"/>
+        </svg>
+        <div class="countdown-number" id="word-timer-number"></div>
+      </div>
+    </div>
+
+    <!-- WORD GONE SCREEN -->
+    <div class="screen word-reveal-screen" id="screen-word-gone">
+      <div class="word-gone">Your word has disappeared.</div>
+      <div style="font-size:3rem; opacity:0.3;">🔒</div>
+      <div class="word-gone">Remember it. Don't forget.</div>
+    </div>
+
+    <!-- WAITING SCREEN -->
+    <div class="screen waiting-screen" id="screen-waiting">
+      <div class="phase-label" id="waiting-phase-label">DISCUSSION IN PROGRESS</div>
+      <div class="phase-info" id="waiting-phase-info">Listen carefully and observe.</div>
+    </div>
+
+    <!-- VOTING SCREEN -->
+    <div class="screen voting-screen" id="screen-voting">
+      <div class="vote-header">
+        <h2>VOTE TO ELIMINATE</h2>
+        <p>Select one player you think is the imposter</p>
+      </div>
+      <div class="vote-timer" id="vote-timer-display"></div>
+      <div class="vote-list" id="vote-list"></div>
+      <div class="vote-confirm-bar" id="vote-confirm-bar" style="display:none;">
+        <button class="btn btn-danger btn-large" id="btn-confirm-vote">CONFIRM VOTE</button>
+      </div>
+    </div>
+
+    <!-- VOTE SUBMITTED SCREEN -->
+    <div class="screen vote-submitted-screen" id="screen-vote-submitted">
+      <div class="check-icon">✓</div>
+      <h2>Vote Recorded</h2>
+      <p style="color:var(--text-secondary);">Waiting for other players...</p>
+    </div>
+
+    <!-- RESULT SCREEN (survived) -->
+    <div class="screen result-screen" id="screen-result">
+      <div class="survived" id="result-message">You survived!</div>
+      <p style="color:var(--text-secondary);" id="result-remaining"></p>
+    </div>
+
+    <!-- ELIMINATED SCREEN -->
+    <div class="screen eliminated-screen" id="screen-eliminated">
+      <div class="skull">💀</div>
+      <h2>YOU HAVE BEEN ELIMINATED</h2>
+      <div class="role-reveal" id="eliminated-role"></div>
+      <p style="color:var(--text-muted); margin-top:20px;">Watch the game on the meeting room screen.</p>
+    </div>
+
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/player.js"></script>
+</body>
+</html>

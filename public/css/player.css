@@ -1,0 +1,331 @@
+/* ============================================
+   PLAYER VIEW - Mobile/Laptop optimized
+   ============================================ */
+
+.player-container {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+}
+
+/* ---- Join Screen ---- */
+.join-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  gap: 24px;
+  text-align: center;
+}
+
+.join-screen .game-logo {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 8px;
+}
+
+.join-screen .game-subtitle {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: 24px;
+}
+
+.join-form {
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.join-form .input-field {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 1.5rem;
+  letter-spacing: 8px;
+  font-family: var(--font-display);
+}
+
+.join-form .input-field.name-input {
+  text-transform: none;
+  font-size: 1.1rem;
+  letter-spacing: normal;
+  font-family: var(--font-body);
+}
+
+.join-error {
+  color: var(--accent-red);
+  font-size: 0.9rem;
+  min-height: 24px;
+}
+
+/* ---- Lobby Screen ---- */
+.lobby-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+  gap: 16px;
+}
+
+.lobby-screen .waiting-text {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  animation: pulse 2s infinite;
+}
+
+.lobby-screen .player-count {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  color: var(--accent-cyan);
+}
+
+.lobby-screen .your-name {
+  font-size: 1rem;
+  color: var(--text-muted);
+}
+
+/* ---- Word Reveal Screen ---- */
+.word-reveal-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+  gap: 24px;
+}
+
+.word-reveal-screen .memorize-label {
+  font-size: 0.9rem;
+  color: var(--accent-yellow);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 700;
+}
+
+.word-reveal-screen .the-word {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  font-weight: 900;
+  color: var(--accent-cyan);
+  text-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+  padding: 20px;
+  animation: glow 2s infinite;
+}
+
+.word-reveal-screen .word-timer {
+  font-family: var(--font-display);
+  font-size: 4rem;
+  font-weight: 900;
+}
+
+.word-reveal-screen .word-gone {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+}
+
+/* ---- Waiting Screen ---- */
+.waiting-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+  gap: 16px;
+}
+
+.waiting-screen .phase-label {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  color: var(--accent-purple);
+  text-transform: uppercase;
+}
+
+.waiting-screen .phase-info {
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+/* ---- Voting Screen ---- */
+.voting-screen {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding-top: 40px;
+}
+
+.voting-screen .vote-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.voting-screen .vote-header h2 {
+  font-size: 1.3rem;
+  color: var(--accent-red);
+  margin-bottom: 8px;
+}
+
+.voting-screen .vote-header p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.voting-screen .vote-timer {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--accent-yellow);
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.vote-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 100px;
+}
+
+.vote-option {
+  background: var(--bg-card);
+  border: 2px solid var(--border-color);
+  border-radius: 10px;
+  padding: 14px 18px;
+  font-size: 1.05rem;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+}
+
+.vote-option:hover {
+  border-color: var(--accent-cyan);
+  background: var(--bg-card-hover);
+}
+
+.vote-option.selected {
+  border-color: var(--accent-red);
+  background: rgba(255, 51, 102, 0.15);
+  box-shadow: 0 0 15px rgba(255, 51, 102, 0.2);
+}
+
+.vote-confirm-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px 20px;
+  background: linear-gradient(transparent, var(--bg-primary) 30%);
+  text-align: center;
+}
+
+.vote-confirm-bar .btn {
+  width: 100%;
+  max-width: 440px;
+}
+
+/* ---- Vote Submitted Screen ---- */
+.vote-submitted-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+  gap: 16px;
+}
+
+.vote-submitted-screen .check-icon {
+  font-size: 4rem;
+  color: var(--accent-green);
+}
+
+.vote-submitted-screen h2 {
+  color: var(--accent-green);
+}
+
+/* ---- Result Screen ---- */
+.result-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+  gap: 16px;
+}
+
+.result-screen .survived {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  color: var(--accent-green);
+}
+
+.result-screen .eliminated-msg {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  color: var(--accent-red);
+}
+
+/* ---- Eliminated Screen ---- */
+.eliminated-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+  gap: 20px;
+}
+
+.eliminated-screen .skull {
+  font-size: 5rem;
+  opacity: 0.6;
+}
+
+.eliminated-screen h2 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--accent-red);
+}
+
+.eliminated-screen .role-reveal {
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+/* ---- Screen transitions ---- */
+.screen {
+  display: none;
+}
+
+.screen.active {
+  display: flex;
+}
+
+/* Responsive */
+@media (max-width: 400px) {
+  .player-container {
+    padding: 16px;
+  }
+
+  .word-reveal-screen .the-word {
+    font-size: 2.2rem;
+  }
+}
