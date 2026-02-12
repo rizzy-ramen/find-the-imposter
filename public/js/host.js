@@ -683,7 +683,25 @@
       playSound("defeat");
     }
 
-    gameoverMessage.textContent = data.message;
+    // Show winner name(s)
+    if (data.winner === "IMPOSTER") {
+      const imposter = data.survivors.find((p) => p.isImposter);
+      gameoverMessage.textContent = imposter
+        ? `${imposter.name} was the IMPOSTER and survived!`
+        : data.message;
+    } else {
+      const innocentNames = data.survivors
+        .filter((p) => !p.isImposter)
+        .map((p) => p.name);
+      const caughtImposter = data.finalRoundEliminated
+        ? data.finalRoundEliminated.find((p) => p.isImposter)
+        : null;
+      const caughtText = caughtImposter
+        ? ` ${caughtImposter.name} was the imposter!`
+        : "";
+      gameoverMessage.textContent =
+        `${innocentNames.join(", ")} caught the imposter and win!${caughtText}`;
+    }
 
     // Render survivors with role indicators
     gameoverSurvivors.innerHTML = "";
