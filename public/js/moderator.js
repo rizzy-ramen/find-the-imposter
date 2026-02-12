@@ -191,14 +191,23 @@
         });
         break;
 
-      case "CLUE_CIRCLE":
-        addButton("NEXT PLAYER", "btn-primary current-action", () => {
-          socket.emit("next-clue-player", { gameId });
-        });
-        addButton("SKIP TO DISCUSSION", "btn-warning", () => {
-          socket.emit("start-discussion", { gameId });
-        });
+      case "CLUE_CIRCLE": {
+        const cluesDone = gameState && gameState.currentClueIndex >= gameState.clueOrder.length;
+        if (cluesDone) {
+          // All players have given clues — show discussion as primary action
+          addButton("START DISCUSSION", "btn-success current-action", () => {
+            socket.emit("start-discussion", { gameId });
+          });
+        } else {
+          addButton("NEXT PLAYER", "btn-primary current-action", () => {
+            socket.emit("next-clue-player", { gameId });
+          });
+          addButton("SKIP TO DISCUSSION", "btn-warning", () => {
+            socket.emit("start-discussion", { gameId });
+          });
+        }
         break;
+      }
 
       case "DISCUSSION":
         addButton("OPEN VOTING", "btn-danger current-action", () => {
